@@ -5,7 +5,7 @@
  * This class also has methods that check whether a collection has a title, whether the title is available, and
  * and can print a full roster of all titles in the collection
  * @author Rachel Reinking
- * @version 30 March 2023
+ * @version 5 April 2023
  */
 
 import java.util.Hashtable;
@@ -16,6 +16,7 @@ public class Library extends Building{
   private Hashtable<String, Boolean> collection;
   private boolean hasElevator;
 
+   /* Default constructor */
   public Library(String name, String address, int nFloors, boolean hasElevator) {
     super(name, address, nFloors);
     this.collection = new  Hashtable<String, Boolean>();
@@ -24,7 +25,7 @@ public class Library extends Building{
 
   /**
    * This method adds a title to the library's collection
-   * @param title of the book
+   * @param title The title of the book
    */
   public void addTitle(String title) {
     if(this.collection.containsKey(title)) {
@@ -34,8 +35,21 @@ public class Library extends Building{
   }
 
   /**
+   * This method overloads the addTitle() method to include the additional boolean input availability
+   * This method adds a title to the library's collection and sets its availability status
+   * @param title The title of the book
+   * @param availability T/F: whether or not the book is available for checkout
+   */
+  public void addTitle(String title, boolean availability) {
+    if(this.collection.containsKey(title)) {
+      throw new RuntimeException(this.name + " already contains the title " + title);
+    }
+    this.collection.put(title, availability);
+  }
+
+  /**
    * This method removes a title from the library's collection
-   * @param title of the book
+   * @param title The title of the book
    * @return The title of the book being removed
    */
   public String removeTitle(String title) {
@@ -48,7 +62,7 @@ public class Library extends Building{
 
   /**
    * This method allows patrons to check out a title from the library's collection
-   * @param title of the book
+   * @param title The title of the book
    */
   public void checkOut(String title) {
       if(!this.collection.containsKey(title)) {
@@ -62,7 +76,7 @@ public class Library extends Building{
 
     /**
      * This method allows patrons to return a title to the library's collection
-     * @param title of the book
+     * @param title The title of the book
      */
     public void returnBook(String title) {
       if(!this.collection.containsKey(title)) {
@@ -76,7 +90,7 @@ public class Library extends Building{
 
     /**
      * This method takes in a title of a book and tells us whether the title is a key in the library's collection
-     * @param title of the book
+     * @param title The title of the book
      * @return T/F: whether or not a book is in the libary's collection
      */
     public boolean containsTitle(String title) {
@@ -88,7 +102,7 @@ public class Library extends Building{
     
     /**
      * This method takes in the title of a book and tells us whether the title is available to be checked out
-     * @param title of the book
+     * @param title The title of the book
      * @return T/F: whether or not a book is able to be checked out of the collection
      */
     public boolean isAvailable(String title) {
@@ -115,6 +129,25 @@ public class Library extends Building{
     }
 
     /**
+     * This method overloads the printCollecttion() method to include the additional boolean input includeAvail
+     * This method prints out all titles that are in the library's collection
+     * if includeAvail is true, it also prints their corresponding availability to be checked out
+     * @param includeAvail T/F: include availability of the titles when printing the collection
+     */
+    public void printCollection(boolean includeAvail) {
+      if (includeAvail==true) {
+        this.printCollection();
+      }
+      else {
+        System.out.println("This collection");
+        Enumeration<String> keys = this.collection.keys();
+        for(int i = 0; i < this.collection.size(); i++) {
+        System.out.println("Title: " + keys.nextElement());
+        }
+      }
+    }
+
+    /**
      * This method overrides the showOptions() method inherited from the Building class
      * This method prints all the additional interactive methods in the Library Class
      */
@@ -137,8 +170,7 @@ public class Library extends Building{
 
 
     public static void main(String[] args) {
-      Library elting = new Library("Elting", "Main St", 2, false);
-      elting.showOptions();
+    
     }
   
   }
